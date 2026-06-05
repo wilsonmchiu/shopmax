@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopMax - Online Store</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #131921;
+            --secondary: #232f3e;
+            --accent: #febd69;
+            --accent-dark: #f3a847;
+            --text: #0f1111;
+            --text-light: #565959;
+            --bg: #eaeded;
+            --white: #ffffff;
+            --success: #067d62;
+            --link: #007185;
+            --star: #de7921;
+            --border: #ddd;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.4;
+        }
+
+        /* ═══════════════════════════════════════════
+           HEADER & NAVIGATION
+           ═══════════════════════════════════════════ */
+        .header {
+            background: var(--primary);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            color: var(--white);
+            font-size: 22px;
+            font-weight: 700;
+            text-decoration: none;
+            border: 1px solid transparent;
+            padding: 4px 8px;
+            border-radius: 3px;
+        }
+
+        .logo:hover { border-color: var(--white); }
+
+        .logo span { color: var(--accent); }
+
+        .search-bar {
+            flex: 1;
+            display: flex;
+            border-radius: 4px;
+            overflow: hidden;
+            height: 40px;
+        }
+
+        .search-bar select {
+            background: #f3f3f3;
+            border: none;
+            padding: 0 8px;
+            font-size: 12px;
+            color: var(--text-light);
+            border-right: 1px solid var(--border);
+            cursor: pointer;
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            padding: 0 12px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .search-bar button {
+            background: var(--accent);
+            border: none;
+            padding: 0 16px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .search-bar button:hover { background: var(--accent-dark); }
+
+        .header-nav {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .header-nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 12px;
+            padding: 4px 8px;
+            border: 1px solid transparent;
+            border-radius: 3px;
+        }
+
+        .header-nav a:hover { border-color: var(--white); }
+
+        .header-nav a .nav-label { display: block; font-size: 10px; color: #ccc; }
+        .header-nav a .nav-value { font-size: 13px; font-weight: 700; }
+
+        .cart-btn {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -4px;
+            left: 12px;
+            background: var(--accent);
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 0 5px;
+            border-radius: 8px;
+        }
+
+        /* Sub-nav */
+        .sub-nav {
+            background: var(--secondary);
+            padding: 8px 20px;
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+        }
+
+        .sub-nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 13px;
+            white-space: nowrap;
+            padding: 4px 8px;
+            border-radius: 3px;
+        }
+
+        .sub-nav a:hover { background: rgba(255,255,255,0.1); }
+
+        /* ═══════════════════════════════════════════
+           HERO BANNER
+           ═══════════════════════════════════════════ */
+        .hero {
+            background: linear-gradient(135deg, #1a3a5c 0%, #2d5a7b 50%, #3d7a9b 100%);
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .hero h1 { font-size: 28px; margin-bottom: 8px; }
+        .hero p { font-size: 16px; color: #cde; margin-bottom: 20px; }
+
+        .hero-cta {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--primary);
+            padding: 12px 32px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hero-cta:hover { background: var(--accent-dark); }
+
+        /* ═══════════════════════════════════════════
+           MAIN CONTENT
+           ═══════════════════════════════════════════ */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+
+        /* ═══════════════════════════════════════════
+           PRODUCT GRID
+           ═══════════════════════════════════════════ */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            padding: 16px;
+            transition: box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: #f7f7f7;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            font-size: 48px;
+        }
+
+        .product-title {
+            font-size: 14px;
+            color: var(--link);
+            margin-bottom: 6px;
+            cursor: pointer;
+            line-height: 1.3;
+        }
+
+        .product-title:hover { color: var(--accent-dark); text-decoration: underline; }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 6px;
+        }
+
+        .stars { color: var(--star); font-size: 14px; }
+        .rating-count { font-size: 12px; color: var(--link); }
+
+        .product-price {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .product-price .currency { font-size: 12px; vertical-align: super; }
+        .product-price .cents { font-size: 12px; vertical-align: super; }
+
+        .product-original-price {
+            font-size: 12px;
+            color: var(--text-light);
+            text-decoration: line-through;
+            margin-bottom: 8px;
+        }
+
+        .product-delivery {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+
+        .product-delivery strong { color: var(--text); }
+
+        .btn-add-to-cart {
+            background: var(--accent);
+            border: 1px solid #c89411;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: 500;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .btn-add-to-cart:hover { background: var(--accent-dark); }
+
+        .btn-buy-now {
+            background: #ffa41c;
+            border: 1px solid #ff8f00;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: 500;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .btn-buy-now:hover { background: #e89b1c; }
+
+        /* ═══════════════════════════════════════════
+           DEALS SECTION
+           ═══════════════════════════════════════════ */
+        .deals-banner {
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            padding: 20px;
+            margin-bottom: 40px;
+        }
+
+        .deals-banner h2 {
+            color: #cc0c39;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        .deals-row {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .deal-item {
+            min-width: 180px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .deal-badge {
+            background: #cc0c39;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 3px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .deal-image {
+            width: 140px;
+            height: 140px;
+            background: #f7f7f7;
+            border-radius: 4px;
+            margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+
+        .deal-price { font-weight: 700; font-size: 14px; }
+
+        /* ═══════════════════════════════════════════
+           NEWSLETTER / SUBSCRIBE
+           ═══════════════════════════════════════════ */
+        .subscribe-section {
+            background: var(--secondary);
+            padding: 30px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            border-radius: 8px;
+        }
+
+        .subscribe-section h3 { color: var(--white); margin-bottom: 8px; font-size: 18px; }
+        .subscribe-section p { color: #ccc; font-size: 13px; margin-bottom: 16px; }
+
+        .subscribe-form {
+            display: flex;
+            max-width: 400px;
+            margin: 0 auto;
+            gap: 8px;
+        }
+
+        .subscribe-form input {
+            flex: 1;
+            padding: 10px 14px;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .subscribe-form button {
+            background: var(--accent);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .subscribe-form button:hover { background: var(--accent-dark); }
+
+        /* ═══════════════════════════════════════════
+           LEAD / CONTACT FORM
+           ═══════════════════════════════════════════ */
+        .contact-section {
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            padding: 24px;
+            margin-bottom: 40px;
+            max-width: 500px;
+        }
+
+        .contact-section h3 { margin-bottom: 16px; font-size: 16px; }
+
+        .form-group { margin-bottom: 12px; }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus { border-color: var(--link); box-shadow: 0 0 0 2px rgba(0,113,133,0.1); }
+
+        .btn-submit {
+            background: var(--accent);
+            border: 1px solid #c89411;
+            border-radius: 4px;
+            padding: 10px 24px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn-submit:hover { background: var(--accent-dark); }
+
+        /* ═══════════════════════════════════════════
+           CART / CHECKOUT SECTION
+           ═══════════════════════════════════════════ */
+        .cart-section {
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            padding: 24px;
+            margin-bottom: 40px;
+        }
+
+        .cart-section h3 { margin-bottom: 16px; font-size: 16px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            background: #f7f7f7;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .cart-item-details { flex: 1; }
+        .cart-item-title { font-size: 14px; color: var(--link); margin-bottom: 4px; }
+        .cart-item-price { font-weight: 700; font-size: 16px; }
+        .cart-item-qty { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+
+        .cart-item-remove {
+            background: none;
+            border: none;
+            color: var(--link);
+            font-size: 12px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .cart-item-remove:hover { text-decoration: underline; color: #cc0c39; }
+
+        .cart-summary {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-total { font-size: 18px; font-weight: 700; }
+
+        .btn-checkout {
+            background: var(--accent);
+            border: 1px solid #c89411;
+            border-radius: 4px;
+            padding: 12px 32px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-checkout:hover { background: var(--accent-dark); }
+
+        .btn-purchase {
+            background: #ffd814;
+            border: 1px solid #fcd200;
+            border-radius: 8px;
+            padding: 12px 32px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        .btn-purchase:hover { background: #f7ca00; }
+
+        /* ═══════════════════════════════════════════
+           SIGN UP SECTION
+           ═══════════════════════════════════════════ */
+        .signup-section {
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            padding: 24px;
+            margin-bottom: 40px;
+            max-width: 380px;
+            text-align: center;
+        }
+
+        .signup-section h3 { margin-bottom: 4px; font-size: 22px; }
+        .signup-section .subtitle { color: var(--text-light); font-size: 13px; margin-bottom: 20px; }
+
+        .btn-signup {
+            background: var(--accent);
+            border: 1px solid #c89411;
+            border-radius: 4px;
+            padding: 10px 24px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        .btn-signup:hover { background: var(--accent-dark); }
+
+        .signup-divider {
+            margin: 16px 0;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 12px;
+        }
+
+        .btn-signin {
+            background: #e7e9ec;
+            border: 1px solid #adb1b8;
+            border-radius: 4px;
+            padding: 8px 24px;
+            font-size: 13px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn-signin:hover { background: #dfe3e8; }
+
+        /* ═══════════════════════════════════════════
+           FOOTER
+           ═══════════════════════════════════════════ */
+        .footer {
+            background: var(--secondary);
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .footer-links { margin-bottom: 16px; }
+
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            font-size: 13px;
+            margin: 0 12px;
+        }
+
+        .footer-links a:hover { text-decoration: underline; }
+
+        .footer-copyright {
+            color: #999;
+            font-size: 11px;
+        }
+
+        /* ═══════════════════════════════════════════
+           NOTIFICATIONS
+           ═══════════════════════════════════════════ */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: var(--white);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 9999;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .notification.show { display: block; }
+
+        /* ═══════════════════════════════════════════
+           PRODUCT DETAIL MODAL
+           ═══════════════════════════════════════════ */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9998;
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            float: right;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════════════════════════════════════════
+         HEADER
+         ═══════════════════════════════════════════ -->
+    <header class="header">
+        <a href="#" class="logo">Shop<span>Max</span></a>
+
+        <div class="search-bar">
+            <select id="search-category">
+                <option>All Categories</option>
+                <option>Electronics</option>
+                <option>Clothing</option>
+                <option>Home & Kitchen</option>
+                <option>Books</option>
+                <option>Sports</option>
+            </select>
+            <input type="text" id="search-input" placeholder="Search ShopMax" />
+            <button id="search-btn">🔍</button>
+        </div>
+
+        <div class="header-nav">
+            <a href="#signup-section">
+                <span class="nav-label">Hello, Sign in</span>
+                <span class="nav-value">Account</span>
+            </a>
+            <a href="#" id="orders-link">
+                <span class="nav-label">Returns</span>
+                <span class="nav-value">& Orders</span>
+            </a>
+            <a href="#cart-section" class="cart-btn" id="cart-link">
+                <span class="cart-count" id="cart-count">0</span>
+                <span class="nav-value">🛒 Cart</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Sub navigation -->
+    <nav class="sub-nav">
+        <a href="#">Today's Deals</a>
+        <a href="#">New Arrivals</a>
+        <a href="#">Best Sellers</a>
+        <a href="#">Electronics</a>
+        <a href="#">Fashion</a>
+        <a href="#">Home & Garden</a>
+        <a href="#">Gift Cards</a>
+        <a href="#contact-section">Customer Service</a>
+    </nav>
+
+    <!-- ═══════════════════════════════════════════
+         HERO BANNER
+         ═══════════════════════════════════════════ -->
+    <section class="hero">
+        <h1>Summer Sale — Up to 60% Off</h1>
+        <p>Shop the best deals on electronics, fashion, and more</p>
+        <button class="hero-cta" id="shop-deals-btn">Shop All Deals</button>
+    </section>
+
+    <div class="container">
+
+        <!-- ═══════════════════════════════════════════
+             PRODUCTS
+             ═══════════════════════════════════════════ -->
+        <h2 class="section-title">Featured Products</h2>
+        <div class="product-grid" id="product-grid">
+            <!-- Products injected by JS -->
+        </div>
+
+        <!-- ═══════════════════════════════════════════
+             DEALS
+             ═══════════════════════════════════════════ -->
+        <div class="deals-banner">
+            <h2>⚡ Lightning Deals</h2>
+            <div class="deals-row">
+                <div class="deal-item" data-product-id="deal-1">
+                    <span class="deal-badge">62% off</span>
+                    <div class="deal-image">🎧</div>
+                    <div class="deal-price">$28.99</div>
+                </div>
+                <div class="deal-item" data-product-id="deal-2">
+                    <span class="deal-badge">45% off</span>
+                    <div class="deal-image">⌚</div>
+                    <div class="deal-price">$149.00</div>
+                </div>
+                <div class="deal-item" data-product-id="deal-3">
+                    <span class="deal-badge">35% off</span>
+                    <div class="deal-image">📷</div>
+                    <div class="deal-price">$89.99</div>
+                </div>
+                <div class="deal-item" data-product-id="deal-4">
+                    <span class="deal-badge">50% off</span>
+                    <div class="deal-image">🖥️</div>
+                    <div class="deal-price">$399.00</div>
+                </div>
+                <div class="deal-item" data-product-id="deal-5">
+                    <span class="deal-badge">28% off</span>
+                    <div class="deal-image">🎮</div>
+                    <div class="deal-price">$49.99</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════
+             SUBSCRIBE / NEWSLETTER
+             ═══════════════════════════════════════════ -->
+        <div class="subscribe-section">
+            <h3>📬 Never Miss a Deal</h3>
+            <p>Subscribe to our newsletter and get exclusive offers delivered to your inbox</p>
+            <form class="subscribe-form" id="subscribe-form">
+                <input type="email" id="subscribe-email" placeholder="Enter your email" required />
+                <button type="submit" id="subscribe-btn">Subscribe</button>
+            </form>
+        </div>
+
+        <!-- ═══════════════════════════════════════════
+             CART
+             ═══════════════════════════════════════════ -->
+        <div class="cart-section" id="cart-section">
+            <h3>🛒 Shopping Cart</h3>
+            <div id="cart-items">
+                <div class="cart-item" data-product-id="cart-1">
+                    <div class="cart-item-image">📱</div>
+                    <div class="cart-item-details">
+                        <div class="cart-item-title">Wireless Bluetooth Earbuds Pro Max</div>
+                        <div class="cart-item-price" data-price="79.99">$79.99</div>
+                        <div class="cart-item-qty">Qty: 1</div>
+                    </div>
+                    <button class="cart-item-remove">Delete</button>
+                </div>
+                <div class="cart-item" data-product-id="cart-2">
+                    <div class="cart-item-image">👟</div>
+                    <div class="cart-item-details">
+                        <div class="cart-item-title">Ultra Comfort Running Shoes - Size 10</div>
+                        <div class="cart-item-price" data-price="124.99">$124.99</div>
+                        <div class="cart-item-qty">Qty: 1</div>
+                    </div>
+                    <button class="cart-item-remove">Delete</button>
+                </div>
+            </div>
+            <div class="cart-summary">
+                <div class="cart-total">Subtotal (2 items): <strong>$204.98</strong></div>
+                <button class="btn-checkout" id="checkout-btn">Proceed to Checkout</button>
+            </div>
+            <button class="btn-purchase" id="purchase-btn">🔒 Place Your Order</button>
+        </div>
+
+        <!-- ═══════════════════════════════════════════
+             SIGN UP
+             ═══════════════════════════════════════════ -->
+        <div class="signup-section" id="signup-section">
+            <h3>Create Account</h3>
+            <p class="subtitle">New to ShopMax?</p>
+            <div class="form-group">
+                <input type="text" id="signup-name" placeholder="Full name" />
+            </div>
+            <div class="form-group">
+                <input type="email" id="signup-email" placeholder="Email address" />
+            </div>
+            <div class="form-group">
+                <input type="password" id="signup-password" placeholder="Create password" />
+            </div>
+            <button class="btn-signup" id="signup-btn">Create your ShopMax account</button>
+            <div class="signup-divider">— Already have an account? —</div>
+            <button class="btn-signin" id="signin-btn">Sign in</button>
+        </div>
+
+        <!-- ═══════════════════════════════════════════
+             CONTACT / LEAD FORM
+             ═══════════════════════════════════════════ -->
+        <div class="contact-section" id="contact-section">
+            <h3>📞 Contact Us</h3>
+            <form id="contact-form">
+                <div class="form-group">
+                    <label>Your Name</label>
+                    <input type="text" id="contact-name" placeholder="John Doe" />
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="contact-email" placeholder="john@example.com" />
+                </div>
+                <div class="form-group">
+                    <label>Subject</label>
+                    <input type="text" id="contact-subject" placeholder="How can we help?" />
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea id="contact-message" rows="4" placeholder="Tell us more..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit" id="contact-submit-btn">Submit Inquiry</button>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         FOOTER
+         ═══════════════════════════════════════════ -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#">About Us</a>
+            <a href="#">Careers</a>
+            <a href="#">Press</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Help</a>
+        </div>
+        <div class="footer-copyright">
+            © 2026 ShopMax.com, Inc. — AAT Event Builder Demo Site for testing visual overlay configuration
+        </div>
+    </footer>
+
+    <!-- Notification toast -->
+    <div class="notification" id="notification"></div>
+
+    <!-- Product detail modal -->
+    <div class="modal-overlay" id="product-modal">
+        <div class="modal-content" id="modal-content"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         JAVASCRIPT
+         ═══════════════════════════════════════════ -->
+    <script>
+        // ─── PRODUCT DATA ───
+        const products = [
+            { id: 'P001', name: 'Sony WH-1000XM5 Wireless Noise Cancelling Headphones', price: 299.99, originalPrice: 399.99, rating: 4.7, reviews: 12847, emoji: '🎧', category: 'Electronics' },
+            { id: 'P002', name: 'Apple iPad Air (5th Gen) 10.9" 256GB WiFi Tablet', price: 599.00, originalPrice: 749.00, rating: 4.8, reviews: 8923, emoji: '📱', category: 'Electronics' },
+            { id: 'P003', name: 'Nike Air Max 270 Running Shoes - Mens', price: 129.99, originalPrice: 159.99, rating: 4.5, reviews: 3456, emoji: '👟', category: 'Clothing' },
+            { id: 'P004', name: 'Instant Pot Duo 7-in-1 Electric Pressure Cooker 6Qt', price: 89.95, originalPrice: 119.95, rating: 4.7, reviews: 45230, emoji: '🍲', category: 'Home & Kitchen' },
+            { id: 'P005', name: 'Samsung 55" Crystal UHD 4K Smart TV (2026)', price: 447.99, originalPrice: 549.99, rating: 4.6, reviews: 5678, emoji: '📺', category: 'Electronics' },
+            { id: 'P006', name: 'Levi\'s 501 Original Fit Jeans - Dark Wash', price: 49.99, originalPrice: 69.50, rating: 4.4, reviews: 2134, emoji: '👖', category: 'Clothing' },
+            { id: 'P007', name: 'Kindle Paperwhite (16 GB) - 6.8" Display', price: 139.99, originalPrice: 159.99, rating: 4.7, reviews: 19845, emoji: '📖', category: 'Electronics' },
+            { id: 'P008', name: 'Dyson V15 Detect Cordless Vacuum Cleaner', price: 649.99, originalPrice: 749.99, rating: 4.6, reviews: 7832, emoji: '🧹', category: 'Home & Kitchen' },
+        ];
+
+        // ─── RENDER PRODUCTS ───
+        const grid = document.getElementById('product-grid');
+        products.forEach(p => {
+            const stars = '★'.repeat(Math.floor(p.rating)) + (p.rating % 1 >= 0.5 ? '½' : '');
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.setAttribute('data-product-id', p.id);
+            card.innerHTML = `
+                <div class="product-image">${p.emoji}</div>
+                <div class="product-title" data-product-name="${p.name}">${p.name}</div>
+                <div class="product-rating">
+                    <span class="stars">${stars}</span>
+                    <span class="rating-count">${p.reviews.toLocaleString()}</span>
+                </div>
+                <div class="product-price" data-price="${p.price}">
+                    <span class="currency">$</span>${Math.floor(p.price)}<span class="cents">${(p.price % 1).toFixed(2).substring(1)}</span>
+                </div>
+                <div class="product-original-price">List: $${p.originalPrice.toFixed(2)}</div>
+                <div class="product-delivery">FREE delivery <strong>Tomorrow</strong></div>
+                <button class="btn-add-to-cart" data-product-id="${p.id}" data-product-name="${p.name}" data-price="${p.price}" data-category="${p.category}">Add to Cart</button>
+                <button class="btn-buy-now" data-product-id="${p.id}" data-product-name="${p.name}" data-price="${p.price}" data-category="${p.category}">Buy Now</button>
+            `;
+            grid.appendChild(card);
+        });
+
+        // ─── CART LOGIC ───
+        let cartCount = 2;
+        document.getElementById('cart-count').textContent = cartCount;
+
+        document.querySelectorAll('.btn-add-to-cart').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                cartCount++;
+                document.getElementById('cart-count').textContent = cartCount;
+                const name = e.target.getAttribute('data-product-name');
+                showNotification(`✅ Added "${name}" to cart`);
+            });
+        });
+
+        document.querySelectorAll('.btn-buy-now').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const name = e.target.getAttribute('data-product-name');
+                const price = e.target.getAttribute('data-price');
+                showNotification(`🔒 Processing purchase: "${name}" — $${price}`);
+            });
+        });
+
+        // ─── SEARCH ───
+        document.getElementById('search-btn').addEventListener('click', () => {
+            const query = document.getElementById('search-input').value;
+            if (query) {
+                showNotification(`🔍 Searching for: "${query}"`);
+            }
+        });
+
+        document.getElementById('search-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('search-btn').click();
+            }
+        });
+
+        // ─── CHECKOUT / PURCHASE ───
+        document.getElementById('checkout-btn').addEventListener('click', () => {
+            showNotification('💳 Proceeding to checkout...');
+        });
+
+        document.getElementById('purchase-btn').addEventListener('click', () => {
+            showNotification('✅ Order placed successfully! Thank you for your purchase.');
+        });
+
+        // ─── SUBSCRIBE ───
+        document.getElementById('subscribe-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('subscribe-email').value;
+            showNotification(`📬 Subscribed: ${email}`);
+            document.getElementById('subscribe-email').value = '';
+        });
+
+        // ─── SIGN UP ───
+        document.getElementById('signup-btn').addEventListener('click', () => {
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            if (name && email) {
+                showNotification(`✍️ Account created for: ${name}`);
+            } else {
+                showNotification('⚠️ Please fill in all fields');
+            }
+        });
+
+        document.getElementById('signin-btn').addEventListener('click', () => {
+            showNotification('🔑 Redirecting to sign in...');
+        });
+
+        // ─── CONTACT / LEAD ───
+        document.getElementById('contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            showNotification(`📋 Lead submitted from: ${name}`);
+        });
+
+        // ─── CART REMOVE ───
+        document.querySelectorAll('.cart-item-remove').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const item = e.target.closest('.cart-item');
+                const title = item.querySelector('.cart-item-title').textContent;
+                item.remove();
+                cartCount = Math.max(0, cartCount - 1);
+                document.getElementById('cart-count').textContent = cartCount;
+                showNotification(`🗑️ Removed "${title}" from cart`);
+            });
+        });
+
+        // ─── DEAL ITEMS ───
+        document.querySelectorAll('.deal-item').forEach(item => {
+            item.addEventListener('click', () => {
+                showNotification('👁️ Viewing deal details...');
+            });
+        });
+
+        // ─── PRODUCT TITLE CLICK (ViewContent) ───
+        document.querySelectorAll('.product-title').forEach(title => {
+            title.addEventListener('click', () => {
+                const name = title.getAttribute('data-product-name');
+                showNotification(`👁️ Viewing: "${name}"`);
+            });
+        });
+
+        // ─── HERO CTA ───
+        document.getElementById('shop-deals-btn').addEventListener('click', () => {
+            showNotification('🛍️ Browsing all deals...');
+        });
+
+        // ─── NOTIFICATION HELPER ───
+        function showNotification(msg) {
+            const el = document.getElementById('notification');
+            el.textContent = msg;
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 3000);
+        }
+    </script>
+</body>
+</html>
