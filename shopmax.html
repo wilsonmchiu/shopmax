@@ -228,7 +228,10 @@
             justify-content: center;
             margin-bottom: 12px;
             font-size: 48px;
+            text-decoration: none;
         }
+
+        a.product-title { text-decoration: none; display: block; }
 
         .product-title {
             font-size: 14px;
@@ -903,14 +906,24 @@
 
         // ─── RENDER PRODUCTS ───
         const grid = document.getElementById('product-grid');
+        // Products with a static detail page deployed on GitHub Pages. Only these get a
+        // clickable link; others render as plain text so a click never 404s.
+        const DETAIL_PAGES = { P001: 'detail-P001.html', P003: 'detail-P003.html', P005: 'detail-P005.html' };
         products.forEach(p => {
             const stars = '★'.repeat(Math.floor(p.rating)) + (p.rating % 1 >= 0.5 ? '½' : '');
+            const href = DETAIL_PAGES[p.id];
             const card = document.createElement('div');
             card.className = 'product-card';
             card.setAttribute('data-product-id', p.id);
+            const imageHtml = href
+                ? `<a href="${href}" class="product-image">${p.emoji}</a>`
+                : `<div class="product-image">${p.emoji}</div>`;
+            const titleHtml = href
+                ? `<a class="product-title" href="${href}" data-product-name="${p.name}">${p.name}</a>`
+                : `<div class="product-title" data-product-name="${p.name}">${p.name}</div>`;
             card.innerHTML = `
-                <div class="product-image">${p.emoji}</div>
-                <div class="product-title" data-product-name="${p.name}">${p.name}</div>
+                ${imageHtml}
+                ${titleHtml}
                 <div class="product-rating">
                     <span class="stars">${stars}</span>
                     <span class="rating-count">${p.reviews.toLocaleString()}</span>
